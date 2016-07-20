@@ -23,8 +23,23 @@ body {
 }
 
 .note-item {
-  width: 400px;
+  width: 350px;
   background: #fff;
+}
+
+.note-item{
+  ul li {
+    a{
+      text-decoration: none;
+      color:#000;
+    }
+    i {
+      opacity: .65;
+    }
+    i:hover{
+      opacity: 1;
+    }
+  }
 }
 
 .note-header{
@@ -32,20 +47,34 @@ body {
   flex-direction: row;
   justify-content: space-between;
   list-style-type: none;
+  padding-left: 0px;
+  border-style: 1px solid #fff; 
+}
+
+.note-item {
+  padding: 3px 8px;
 }
 
 .inner-list{
+  .title{
+    font-size: 26px;
+    font-weight: bold;
+  }
   list-style-type: none;
   li {
     display:inline;
   }
+  padding: 0;
 }
 
-.content {
-  padding: 30px;
+ContentArea {
+  margin-top: 5px;
 }
 
 .note-input{
-  width: 350px;
-  height: 300px; 
+  font-size: 12px;
+  font-family: "Roboto", sans-serif;
+  width: 100%;
+  rows: 4;
+  columns: 80;
 }

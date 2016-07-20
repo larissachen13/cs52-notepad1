@@ -12,15 +12,24 @@ module.exports = {
     filename: 'bundle.js',
   },
   module: {
-    loaders: [{
-      test: /\.js$/,
-      exclude: /node_modules/,
-      loader: 'babel',
-    },
-    {
-      test: /\.scss/,
-      loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader!postcss-loader'),
-    },
+    loaders: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel',
+      },
+      {
+        test: /\.scss/,
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader!postcss-loader'),
+      },
+      {
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract('style', 'css'),
+      },
+      {
+        test: /\.(eot|svg|ttf|woff(2)?)(\?v=\d+\.\d+\.\d+)?/,
+        loader: 'url',
+      },
       // You could also use other loaders the same way. I. e. the autoprefixer-loader
     ],
   },

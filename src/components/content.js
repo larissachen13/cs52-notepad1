@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import marked from 'marked';
 
 class ContentArea extends Component {
   constructor(props) {
@@ -20,11 +21,11 @@ class ContentArea extends Component {
   render() {
     if (this.props.mode === true) {
       return (
-        <input className="note-input" onChange={this.handleTextChange} value={this.state.noteText} />
+        <textarea className="note-input" onChange={this.handleTextChange} value={this.state.noteText} />
       );
     } else {
       return (
-        <div> {this.state.noteText}</div>
+        <div dangerouslySetInnerHTML={{ __html: marked(this.props.note.text || '') }} />
       );
     }
   }

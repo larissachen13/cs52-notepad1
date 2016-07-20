@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ContentArea from './content';
+import Draggable from 'react-draggable'; // The default
 
 class Note extends Component {
   constructor(props) {
@@ -7,10 +8,23 @@ class Note extends Component {
     this.state = {
       editMode: false,
       noteText: '',
+      deltaPosition: {
+        x: 0, y: 0,
+      },
     };
-    this.contentArea = <div> </div>;
     this.handleEditChange = this.handleEditChange.bind(this);
-    console.log(props.note);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.onDrag = this.onDrag.bind(this);
+  }
+  onDrag(e, ui) {
+    const { x, y } = this.state.deltaPosition;
+    this.setState({
+      deltaPosition: {
+        x: x + ui.deltaX,
+        y: y + ui.deltaY,
+      },
+    });
+    this.props.drag(this.props.id, ui.x, ui.y);
   }
   handleEditChange(event) {
     if (this.state.editMode === false) {
@@ -21,22 +35,42 @@ class Note extends Component {
       this.setState({ editMode: false });
     }
   }
+  handleDelete() {
+    this.props.onDelete(this.props.id);
+  }
   render() {
-    console.log('rendering');
+    const positioning = {
+      x: this.props.note.position.y,
+      y: this.props.note.position.x,
+    };
+    let icon;
+    if (this.state.editMode === true) {
+      icon = 'fa fa-check 2x';
+    } else {
+      icon = 'fa fa-pencil 2x';
+    }
     return (
-      <div className="note-item">
-        <ul className="note-header">
-          <li>
-            <ul className="inner-list">
-              <li> {this.props.note.title} </li>
-              <li> <input type="checkbox" id="edit" onChange={this.handleEditChange} /></li>
-              <li> <input type="checkbox" id="delete" /> </li>
-            </ul>
-          </li>
-          <li> <input type="checkbox" id="drag" /> </li>
-        </ul>
-        <ContentArea id={this.props.id} note={this.props.note} mode={this.state.editMode} onTextChange={this.props.onTextChange} />
-      </div>
+      // defaultPosition={{ x: this.props.note.position.x, y: this.props.note.position.y }}
+      // position={position}
+      // onStart={this.onStartDrag}
+      // onDrag={this.onDrag}
+      // zIndex={100}
+      // onStop={this.onStopDrag}
+      <Draggable onDrag={this.onDrag} defaultPosition={{ x: positioning.x, y: positioning.y }} handle=".drag">
+        <div className="note-item">
+          <ul className="note-header">
+            <li>
+              <ul className="inner-list">
+                <li className="title"> {this.props.note.title} </li>
+                <li> <a href="#"> <i className="fa fa-trash-o 2x" onClick={this.handleDelete} /> </a></li>
+                <li> <a href="#"> <i className={icon} onClick={this.handleEditChange}></i></a></li>
+              </ul>
+            </li>
+            <li className="drag"> <a href="#"> <i className="fa fa-arrows-alt"></i> </a> </li>
+          </ul>
+          <ContentArea id={this.props.id} note={this.props.note} mode={this.state.editMode} onTextChange={this.props.onTextChange} />
+        </div>
+      </Draggable>
     );
   }
 }

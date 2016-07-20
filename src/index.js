@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import AddButton from './components/add_button';
 import NoteList from './components/note_list';
 const Immutable = require('immutable');
+require('font-awesome/css/font-awesome.css');
 
 class App extends Component {
   constructor(props) {
@@ -16,15 +17,35 @@ class App extends Component {
     this.id = 0;
   }
 /** ************  functions*/
+  onDelete(id) {
+    this.setState({
+      notes: this.state.notes.delete(id),
+    });
+  }
+  onDrag(id, x, y) {
+    this.setState({
+      notes: this.state.notes.update(id, (n) => {
+        return Object.assign({}, n, {
+          position: {
+            x,
+            y,
+          },
+        });
+      }),
+    });
+    console.log(this.state.notes);
+  }
   submit(title) {
     const id = this.id;
     this.setState({
       notes: this.state.notes.set(id, {
         title,
         text: '',
-        x: 400,
-        y: 12,
-        zIndex: 26,
+        position: {
+          x: 400,
+          y: 12,
+          zIndex: 26,
+        },
       }),
     });
     this.id++;
@@ -33,14 +54,15 @@ class App extends Component {
     this.setState({
       notes: this.state.notes.update(id, (n) => { return Object.assign({}, n, { text }); }),
     });
-    console.log(this.state.notes.get(id));
   }
   render() {
-    return (
+    return (// onDelete={id => this.onDelete(id)}
       <div>
         <AddButton id="addbutton" onSubmit={title => this.submit(title)} />
         <div className="note-section">
-          <NoteList notes={this.state.notes} onTextChange={(id, text) => this.updateText(id, text)} />
+          <NoteList notes={this.state.notes} onTextChange={(id, text) => this.updateText(id, text)} onDelete={id => this.onDelete(id)}
+            drag={(id, x, y) => this.onDrag(id, x, y)}
+          />
         </div>
       </div>
     );
