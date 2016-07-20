@@ -30,10 +30,10 @@ class App extends Component {
     this.id++;
   }
   updateText(id, text) {
-    console.log(text);
     this.setState({
       notes: this.state.notes.update(id, (n) => { return Object.assign({}, n, { text }); }),
     });
+    console.log(this.state.notes.get(id));
   }
   render() {
     return (
