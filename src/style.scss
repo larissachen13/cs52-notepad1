@@ -1,0 +1,46 @@
+
+body {
+  font-family: "Roboto", sans-serif;
+  color: rgb(10%, 10%, 10%);
+  background: darken(white, 0.2);
+  margin: 50px;
+}
+
+
+:fullscreen a {
+    display: flex
+}
+
+$fontcolor:  rgb(10%, 10%, 10%);
+$backgroundcolor: rgb(98%, 98%, 98%);
+
+
+body {
+  font-family: "Roboto", sans-serif;
+  color: $fontcolor;
+  background-color: $backgroundcolor;
+  margin: 50px;
+}
+
+.note-item {
+  width: 400px;
+  background: #fff;
+}
+
+.note-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  list-style-type: none;
+}
+
+.inner-list{
+  list-style-type: none;
+  li {
+    display:inline;
+  }
+}
+
+.content {
+  padding: 30px; 
+}
