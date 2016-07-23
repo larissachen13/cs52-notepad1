@@ -6,7 +6,8 @@
 * can edit, delete, and drag note 
 * Note inputs accept github markdown
 * Multiple notes can be added and deleted 
-* 
+
+
 ## Extra Credit 
 * Notes are resizeable 
 * A little added CSS such as boxshadow 
