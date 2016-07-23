@@ -13,6 +13,7 @@ class App extends Component {
 /** ***********    state*/
     this.state = {
       notes: Immutable.Map(),
+      highestZindex: 0,
     };
     this.id = 0;
   }
@@ -44,11 +45,16 @@ class App extends Component {
         position: {
           x: 400,
           y: 12,
-          zIndex: 26,
         },
       }),
+      highestZindex: this.state.highestZindex++,
     });
     this.id++;
+  }
+  changeZindex(ind) {
+    this.setState({
+      highestZindex: ind,
+    });
   }
   updateText(id, text) {
     this.setState({
@@ -61,7 +67,7 @@ class App extends Component {
         <AddButton id="addbutton" onSubmit={title => this.submit(title)} />
         <div className="note-section">
           <NoteList notes={this.state.notes} onTextChange={(id, text) => this.updateText(id, text)} onDelete={id => this.onDelete(id)}
-            drag={(id, x, y) => this.onDrag(id, x, y)}
+            drag={(id, x, y) => this.onDrag(id, x, y)} zIndex={this.state.highestZindex} changeZ={ind => this.changeZindex(ind)}
           />
         </div>
       </div>

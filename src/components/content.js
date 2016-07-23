@@ -16,7 +16,7 @@ class ContentArea extends Component {
   handleTextChange(event) {
     this.setState({ noteText: event.target.value });
     // console.log(this.state.noteText);
-    this.props.onTextChange(this.props.id, this.state.noteText);
+    this.props.onTextChange(this.props.id, event.target.value);
   }
   render() {
     if (this.props.mode === true) {
@@ -25,7 +25,7 @@ class ContentArea extends Component {
       );
     } else {
       return (
-        <div dangerouslySetInnerHTML={{ __html: marked(this.props.note.text || '') }} />
+        <div className="note-text" dangerouslySetInnerHTML={{ __html: marked(this.props.note.text || '') }} />
       );
     }
   }

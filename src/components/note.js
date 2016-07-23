@@ -8,23 +8,18 @@ class Note extends Component {
     this.state = {
       editMode: false,
       noteText: '',
-      deltaPosition: {
-        x: 0, y: 0,
-      },
     };
     this.handleEditChange = this.handleEditChange.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.onDrag = this.onDrag.bind(this);
+    this.onStart = this.onStart.bind(this);
   }
   onDrag(e, ui) {
-    const { x, y } = this.state.deltaPosition;
-    this.setState({
-      deltaPosition: {
-        x: x + ui.deltaX,
-        y: y + ui.deltaY,
-      },
-    });
     this.props.drag(this.props.id, ui.x, ui.y);
+  }
+  onStart() {
+    document.getElementById(this.props.id).style.zIndex = this.props.zInd;
+    this.props.changeZ(this.props.zInd + 1);
   }
   handleEditChange(event) {
     if (this.state.editMode === false) {
@@ -39,10 +34,6 @@ class Note extends Component {
     this.props.onDelete(this.props.id);
   }
   render() {
-    const positioning = {
-      x: this.props.note.position.y,
-      y: this.props.note.position.x,
-    };
     let icon;
     if (this.state.editMode === true) {
       icon = 'fa fa-check 2x';
@@ -50,14 +41,11 @@ class Note extends Component {
       icon = 'fa fa-pencil 2x';
     }
     return (
-      // defaultPosition={{ x: this.props.note.position.x, y: this.props.note.position.y }}
-      // position={position}
-      // onStart={this.onStartDrag}
-      // onDrag={this.onDrag}
-      // zIndex={100}
-      // onStop={this.onStopDrag}
-      <Draggable onDrag={this.onDrag} defaultPosition={{ x: positioning.x, y: positioning.y }} handle=".drag">
-        <div className="note-item">
+      <Draggable onDrag={this.onDrag} handle=".drag"
+        position={{ x: this.props.note.position.x, y: this.props.note.position.y }}
+        onStart={this.onStart}
+      >
+        <div className="note-item" id={this.props.id}>
           <ul className="note-header">
             <li>
               <ul className="inner-list">
@@ -68,7 +56,9 @@ class Note extends Component {
             </li>
             <li className="drag"> <a href="#"> <i className="fa fa-arrows-alt"></i> </a> </li>
           </ul>
-          <ContentArea id={this.props.id} note={this.props.note} mode={this.state.editMode} onTextChange={this.props.onTextChange} />
+          <ContentArea className="content" id={this.props.id} note={this.props.note}
+            mode={this.state.editMode} onTextChange={this.props.onTextChange}
+          />
         </div>
       </Draggable>
     );

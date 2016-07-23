@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Draggable from 'react-draggable'; // The default
 
 class AddButton extends Component {
   constructor(props) {
