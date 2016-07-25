@@ -6,6 +6,7 @@ import AddButton from './components/add_button';
 import NoteList from './components/note_list';
 const Immutable = require('immutable');
 require('font-awesome/css/font-awesome.css');
+import { fetchNotes, fetchZind, updateZ, deleteNote, updateNote, submitNote } from './firebase';
 
 class App extends Component {
   constructor(props) {
@@ -15,54 +16,45 @@ class App extends Component {
       notes: Immutable.Map(),
       highestZindex: 0,
     };
-    this.id = 0;
+  }
+  componentDidMount(firebase) {
+    fetchNotes((snapshot) => {
+      this.setState({
+        notes: Immutable.Map(snapshot.val()),
+      });
+    });
+    fetchZind((snapshot) => {
+      this.setState({
+        highestZindex: snapshot.val().zind,
+      });
+    });
   }
 /** ************  functions*/
   onDelete(id) {
-    this.setState({
-      notes: this.state.notes.delete(id),
-    });
+    deleteNote(id);
   }
   onDrag(id, x, y) {
-    this.setState({
-      notes: this.state.notes.update(id, (n) => {
-        return Object.assign({}, n, {
-          position: {
-            x,
-            y,
-          },
-        });
-      }),
+    updateNote(id, {
+      position: { x, y },
     });
-    console.log(this.state.notes);
   }
+  // firebase.database().ref('notes').child(id).remove();
   submit(title) {
-    const id = this.id;
-    this.setState({
-      notes: this.state.notes.set(id, {
-        title,
-        text: '',
-        position: {
-          x: 400,
-          y: 12,
-        },
-      }),
-      highestZindex: this.state.highestZindex++,
+    submitNote({
+      title,
+      text: '',
+      position: { x: 400, y: 12 },
     });
-    this.id++;
+    updateZ(this.state.highestZindex++);
   }
   changeZindex(ind) {
-    this.setState({
-      highestZindex: ind,
-    });
+    updateZ(ind);
   }
   updateText(id, text) {
-    this.setState({
-      notes: this.state.notes.update(id, (n) => { return Object.assign({}, n, { text }); }),
-    });
+    updateNote(id, { text });
   }
   render() {
-    return (// onDelete={id => this.onDelete(id)}
+    return (
       <div>
         <AddButton id="addbutton" onSubmit={title => this.submit(title)} />
         <div className="note-section">

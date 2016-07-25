@@ -15,7 +15,6 @@ class ContentArea extends Component {
   }
   handleTextChange(event) {
     this.setState({ noteText: event.target.value });
-    // console.log(this.state.noteText);
     this.props.onTextChange(this.props.id, event.target.value);
   }
   render() {
