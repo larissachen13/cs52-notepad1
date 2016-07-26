@@ -6,7 +6,7 @@ import AddButton from './components/add_button';
 import NoteList from './components/note_list';
 const Immutable = require('immutable');
 require('font-awesome/css/font-awesome.css');
-import { fetchNotes, fetchZind, updateZ, deleteNote, updateNote, submitNote } from './firebase';
+import { fetchNotes, fetchZind, signIn, updateZ, deleteNote, updateNote, submitNote } from './firebase';
 
 class App extends Component {
   constructor(props) {
@@ -43,7 +43,10 @@ class App extends Component {
     submitNote({
       title,
       text: '',
-      position: { x: 400, y: 12 },
+      position: {
+        x: Math.floor(Math.random() * 400) + 300,
+        y: Math.floor(Math.random() * 50) + 10,
+      },
     });
     updateZ(this.state.highestZindex++);
   }
